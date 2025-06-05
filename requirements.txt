@@ -1,2 +1,4 @@
 environs==14.1.1
 aiogram==3.20.0
+playwright==1.52.0
+SQLAlchemy==2.0.41
