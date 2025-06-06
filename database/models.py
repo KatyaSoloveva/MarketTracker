@@ -1,6 +1,5 @@
-from sqlalchemy import create_engine, Integer, Column, String, ForeignKey
-from sqlalchemy.orm import (declarative_base, declared_attr, Session,
-                            relationship)
+from sqlalchemy import Integer, Column, String, ForeignKey
+from sqlalchemy.orm import declarative_base, declared_attr, relationship
 
 
 class Base:
@@ -26,9 +25,3 @@ class Product(Base):
     desired_price = Column(Integer)
     product_url = Column(String)
     user_id = Column(Integer, ForeignKey('user.id'))
-
-
-if __name__ == "__main__":
-    engine = create_engine('sqlite:///sqlite.db', echo=True)
-    Base.metadata.create_all(engine)
-    session = Session(engine)
