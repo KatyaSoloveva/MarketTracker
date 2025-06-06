@@ -6,6 +6,7 @@ from lexicon.lexicon import LEXICON
 from keyboards.keyboards import main_keyboard
 from logging_conf.base_conf import get_logger
 from parsers.wb_parser import parse_wb
+from database.db_queries import add_user
 
 router = Router()
 
@@ -15,6 +16,9 @@ logger = get_logger()
 @router.message(CommandStart())
 async def start_command_react(message: Message):
     await message.answer(LEXICON['/start'].format(message.chat.first_name))
+    user = await add_user(message.chat.id, message.chat.username)
+    if user:
+        await message.answer(LEXICON['success_registration'])
 
 
 @router.message(F.text == LEXICON['/help'])

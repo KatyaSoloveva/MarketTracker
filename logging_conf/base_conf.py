@@ -5,6 +5,7 @@ from logging.handlers import RotatingFileHandler
 def get_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
+    logger.propagate = False
     stream_handler = logging.StreamHandler()
     file_handler = RotatingFileHandler('logs.log',
                                        maxBytes=50000000,
