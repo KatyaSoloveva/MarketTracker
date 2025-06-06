@@ -23,6 +23,7 @@ class Product(Base):
     shop = Column(String)
     title = Column(String)
     price = Column(Integer)
+    desired_price = Column(Integer)
     product_url = Column(String)
     user_id = Column(Integer, ForeignKey('user.id'))
 
