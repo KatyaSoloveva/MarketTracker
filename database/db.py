@@ -24,7 +24,6 @@ class Product(Base):
     title = Column(String)
     price = Column(Integer)
     product_url = Column(String)
-    img_url = Column(String)
     user_id = Column(Integer, ForeignKey('user.id'))
 
 
