@@ -1,8 +1,12 @@
-import asyncio
 from playwright.async_api import async_playwright
 
+from lexicon.lexicon import LEXICON
+from logging_conf.base_conf import get_logger
 
-async def parse_wb(product_url):
+logger = get_logger()
+
+
+async def parse_wb(product_url, user_id):
     async with async_playwright() as p:
         browser = await p.chromium.launch(args=[
             '--disable-blink-features=AutomationControlled',
@@ -10,18 +14,39 @@ async def parse_wb(product_url):
             'AppleWebKit/537.36...'
         ])
         page = await browser.new_page()
-        await page.goto(product_url)
-        await page.wait_for_selector(".product-page__title")
-        await page.wait_for_selector(".price-block__final-price")
+        result = {'shop': LEXICON['wb_shop'],
+                  'title': None,
+                  'price': None,
+                  'product_url': product_url,
+                  'user_id': user_id}
+        try:
+            await page.goto(product_url)
 
-        title = await page.text_content(".product-page__title")
-        pre_price = await page.text_content(".price-block__final-price")
-        price = int(pre_price.split()[0])
+            try:
+                await page.wait_for_selector(".product-page__title")
+                title = await page.text_content(".product-page__title")
+                result['title'] = title
+                logger.info(LEXICON['selector_is_found'].format('title'))
+            except Exception as e:
+                logger.critical(
+                    LEXICON['selector_not_found'].format(f'title: {e}')
+                )
 
-        print(title, price)
-        await browser.close()
+            try:
+                await page.wait_for_selector(".price-block__final-price")
+                pre_price = await page.text_content(
+                    ".price-block__final-price"
+                )
+                price = int(pre_price.split()[0])
+                result['price'] = price
+                logger.info(LEXICON['selector_is_found'].format('price'))
+            except Exception as e:
+                logger.critical(
+                    LEXICON['selector_not_found'].format(f'price: {e}')
+                )
 
-
-if __name__ == "__main__":
-    url = "https://www.wildberries.ru/catalog/303240677/detail.aspx"
-    asyncio.run(parse_wb(url))
+        except Exception as e:
+            logger.error(LEXICON['page_loading_error'], e)
+        finally:
+            await browser.close()
+            return result

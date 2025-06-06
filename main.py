@@ -1,25 +1,13 @@
 import asyncio
-import logging
-import logging.handlers
 
 from aiogram import Bot, Dispatcher
 
 from config_data.config import Config, load_config
 from handlers import base_handlers
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-stream_handler = logging.StreamHandler()
-file_handler = logging.handlers.RotatingFileHandler('logs.log',
-                                                    maxBytes=50000000,
-                                                    backupCount=5)
-logger.addHandler(stream_handler)
-logger.addHandler(file_handler)
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-stream_handler.setFormatter(formatter)
-file_handler.setFormatter(formatter)
+from logging_conf.base_conf import get_logger
+
+logger = get_logger()
 
 
 async def main():

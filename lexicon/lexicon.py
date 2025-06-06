@@ -18,5 +18,12 @@ LEXICON: dict[str: str] = {
     "button_delete_from_shopping_cart": "\U0001F5D1 Удалить из корзины",
 
     "search_response": "Пришлите, пожалуйста, ссылку на товар, который хотите "
-    "отслеживать \U0001F447"
+    "отслеживать \U0001F447",
+
+    "selector_not_found": "Не найден селектор для {}.",
+    "page_loading_error": "Ошибка при загрузке страницы: ",
+    "selector_is_found": "Селектор для {} найден.",
+
+    "wb_shop": "Wildberries",
+    "ozon_shop": "Ozon"
 }
