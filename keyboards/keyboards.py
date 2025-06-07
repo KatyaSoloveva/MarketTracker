@@ -17,4 +17,5 @@ main_keyboard = ReplyKeyboardMarkup(
 
 exit = KeyboardButton(text=LEXICON['exit'])
 
-exit_from_state_keyboard = ReplyKeyboardMarkup(keyboard=[exit])
+exit_from_state_keyboard = ReplyKeyboardMarkup(keyboard=[[exit]],
+                                               resize_keyboard=True)
