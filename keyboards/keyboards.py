@@ -14,3 +14,7 @@ main_keyboard = ReplyKeyboardMarkup(
               [button_shopping_cart, button_delete_from_shopping_cart]],
     resize_keyboard=True
 )
+
+exit = KeyboardButton(text=LEXICON['exit'])
+
+exit_from_state_keyboard = ReplyKeyboardMarkup(keyboard=[exit])

@@ -18,6 +18,8 @@ LEXICON: dict[str: str] = {
 
     "button_delete_from_shopping_cart": "\U0001F5D1 Удалить из корзины",
 
+    "exit": "Выйти в главное меню \u2198",
+
     "search_response": "Пришлите, пожалуйста, ссылку на товар, который хотите "
     "отслеживать \U0001F447",
 
