@@ -25,4 +25,4 @@ class Product(Base):
     desired_price = Column(Integer)
     product_url = Column(String)
     article_number = Column(Integer)
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.user_id'))

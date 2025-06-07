@@ -7,7 +7,7 @@ from lexicon.lexicon import LEXICON
 from keyboards.keyboards import main_keyboard, exit_from_state_keyboard
 from logging_conf.base_conf import get_logger
 from parsers.wb_parser import parse_wb
-from database.db_queries import add_user
+from database.db_queries import add_user, add_product
 from states.states import FSMPrice
 
 router = Router()
@@ -71,16 +71,21 @@ async def handle_price(message: Message, state: FSMPrice):
         await message.answer(LEXICON['incorrect_price'],
                              reply_markup=exit_from_state_keyboard)
         return
-    # func for adding to db
-    await message.answer(LEXICON['correct_price'].format(
-        shop=product_data['shop'],
-        title=product_data['title'],
-        price=product_data['price'],
-        desired_price=message.text,
-        url=product_data['product_url']
-    ), reply_markup=main_keyboard)
-    await state.clear()
-    logger.info(LEXICON['cancel_log'])
+    product_data['desired_price'] = int(message.text)
+    product = await add_product(product_data)
+    if product:
+        await message.answer(LEXICON['correct_price'].format(
+            shop=product_data['shop'],
+            title=product_data['title'],
+            price=product_data['price'],
+            desired_price=product_data['desired_price'],
+            url=product_data['product_url']
+        ), reply_markup=main_keyboard)
+        await state.clear()
+        logger.info(LEXICON['cancel_log'])
+    else:
+        await message.answer(LEXICON['mistake_msg'],
+                             reply_markup=main_keyboard)
 
 
 @router.message(StateFilter(FSMPrice.waiting_for_price))
