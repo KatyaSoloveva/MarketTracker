@@ -2,6 +2,8 @@ import asyncio
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
+from aiogram.fsm.storage.redis import RedisStorage
+from redis.asyncio import Redis
 
 from config_data.config import load_config
 from handlers import base_handlers
@@ -15,9 +17,12 @@ async def main():
     logger.info('Бот начал работу.')
     config = load_config()
 
+    redis = Redis(host='localhost')
+    storage = RedisStorage(redis=redis)
+
     bot = Bot(token=config.tg_bot.token,
               default=DefaultBotProperties(parse_mode='HTML'))
-    dp = Dispatcher()
+    dp = Dispatcher(storage=storage)
 
     dp.include_router(base_handlers.router)
 

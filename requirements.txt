@@ -3,3 +3,4 @@ aiogram==3.20.0
 playwright==1.52.0
 SQLAlchemy==2.0.41
 asyncpg==0.30.0
+redis==6.2.0
