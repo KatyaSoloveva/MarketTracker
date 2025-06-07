@@ -60,3 +60,23 @@ async def cancel_from_state(message: Message, state: FSMPrice):
     await message.answer(LEXICON['cancel'], reply_markup=main_keyboard)
     await state.clear()
     logger.info(LEXICON['cancel_log'])
+
+
+@router.message(StateFilter(FSMPrice.waiting_for_price),
+                lambda msg: msg.text.isdigit())
+async def handle_price(message: Message, state: FSMPrice):
+    data = await state.get_data()
+    product_data = data['product_data']
+    if int(message.text) >= product_data['price']:
+        await message.answer(LEXICON['incorrect_price'],
+                             reply_markup=exit_from_state_keyboard)
+        return
+    # func for adding to db
+    await message.answer(LEXICON['correct_price'].format(
+        shop=product_data['shop'],
+        title=product_data['title'],
+        price=product_data['price'],
+        desired_price=message.text
+    ), reply_markup=main_keyboard)
+    await state.clear()
+    logger.info(LEXICON['cancel_log'])
