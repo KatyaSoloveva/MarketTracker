@@ -18,13 +18,14 @@ async def parse_wb(product_url, user_id):
                   'title': None,
                   'price': None,
                   'product_url': product_url,
+                  'article_number': None,
                   'user_id': user_id}
         try:
             await page.goto(product_url)
 
             try:
-                await page.wait_for_selector(".product-page__title")
-                title = await page.text_content(".product-page__title")
+                await page.wait_for_selector('.product-page__title')
+                title = await page.text_content('.product-page__title')
                 result['title'] = title
                 logger.info(LEXICON['selector_is_found'].format('title'))
             except Exception as e:
@@ -33,9 +34,9 @@ async def parse_wb(product_url, user_id):
                 )
 
             try:
-                await page.wait_for_selector(".price-block__final-price")
+                await page.wait_for_selector('.price-block__final-price')
                 pre_price = await page.text_content(
-                    ".price-block__final-price"
+                    '.price-block__final-price'
                 )
                 price = int(pre_price.split()[0])
                 result['price'] = price
@@ -43,6 +44,18 @@ async def parse_wb(product_url, user_id):
             except Exception as e:
                 logger.critical(
                     LEXICON['selector_not_found'].format(f'price: {e}')
+                )
+
+            try:
+                await page.wait_for_selector('.product-params__copy')
+                article = await page.text_content(
+                    '.product-params__copy'
+                )
+                result['article_number'] = article
+                logger.info(LEXICON['selector_is_found'].format('article'))
+            except Exception as e:
+                logger.critical(
+                    LEXICON['selector_not_found'].format(f'article: {e}')
                 )
 
         except Exception as e:

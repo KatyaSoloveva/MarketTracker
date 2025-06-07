@@ -24,4 +24,5 @@ class Product(Base):
     price = Column(Integer)
     desired_price = Column(Integer)
     product_url = Column(String)
+    article_number = Column(Integer)
     user_id = Column(Integer, ForeignKey('user.id'))
