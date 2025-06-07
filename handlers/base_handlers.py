@@ -76,7 +76,14 @@ async def handle_price(message: Message, state: FSMPrice):
         shop=product_data['shop'],
         title=product_data['title'],
         price=product_data['price'],
-        desired_price=message.text
+        desired_price=message.text,
+        url=product_data['product_url']
     ), reply_markup=main_keyboard)
     await state.clear()
     logger.info(LEXICON['cancel_log'])
+
+
+@router.message(StateFilter(FSMPrice.waiting_for_price))
+async def handle_incorrect_price(message: Message):
+    await message.answer(LEXICON['not_digit_price'],
+                         reply_markup=exit_from_state_keyboard)
