@@ -1,9 +1,7 @@
 from playwright.async_api import async_playwright
 
 from lexicon.lexicon import LEXICON
-from logging_conf.base_conf import get_logger
-
-logger = get_logger()
+from main import logger
 
 
 async def parse_wb(product_url, user_id):

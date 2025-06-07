@@ -2,10 +2,8 @@ from sqlalchemy import select
 
 from .init_db import async_session
 from .models import User, Product
-from logging_conf.base_conf import get_logger
+from main import logger
 from lexicon.lexicon import LEXICON
-
-logger = get_logger()
 
 
 async def add_user(user_id, username):

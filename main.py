@@ -1,4 +1,6 @@
 import asyncio
+import logging
+from logging.handlers import RotatingFileHandler
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -8,9 +10,20 @@ from redis.asyncio import Redis
 from config_data.config import load_config
 from handlers import base_handlers
 
-from logging_conf.base_conf import get_logger
 
-logger = get_logger()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+stream_handler = logging.StreamHandler()
+file_handler = RotatingFileHandler('logs.log',
+                                   maxBytes=50000000,
+                                   backupCount=5)
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
+formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+stream_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
 
 
 async def main():

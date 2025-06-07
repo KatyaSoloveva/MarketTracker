@@ -5,14 +5,12 @@ from aiogram.fsm.state import default_state
 
 from lexicon.lexicon import LEXICON
 from keyboards.keyboards import main_keyboard, exit_from_state_keyboard
-from logging_conf.base_conf import get_logger
 from parsers.wb_parser import parse_wb
 from database.db_queries import add_user, add_product
 from states.states import FSMPrice
+from main import logger
 
 router = Router()
-
-logger = get_logger()
 
 
 @router.message(CommandStart())
